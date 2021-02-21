@@ -1,0 +1,125 @@
+.tickets .ticketsNav {
+  display: flex;
+  justify-content: space-between;
+  height: 10vh;
+  background-color: rgb(212, 61, 61);
+}
+
+.ticketsNav h1 {
+  color: rgb(112, 185, 109);
+  font-size: 2.6em;
+  margin-left: 20px;
+}
+.ticketsNav .myAccount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ticketsNav .myAccount div {
+  color: white;
+  font-weight: 600;
+  margin: 20px;
+  border: 2px solid white;
+  height: 40px;
+  width: 120px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ticketsNav .myAccount div:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
+  border: 2px solid rgb(212, 100, 100);
+  color: rgb(112, 185, 109);
+}
+.devTickDiv {
+  display: flex;
+  align-items: center;
+  height: 90vh;
+  width: 100vw;
+}
+.ticketsSideNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgb(212, 61, 61);
+  border-radius: 8px;
+  height: 85vh;
+  width: 10vw;
+  margin: 25px;
+}
+
+.ticketsSideNav div {
+  border-radius: 10px;
+  border: 2px solid rgb(212, 61, 61);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9vw;
+  height: 9vw;
+  margin: 10px 10px 0px 10px;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: white;
+}
+.ticketsSideNav div:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
+  border: 2px solid rgb(212, 100, 100);
+  color: rgb(112, 185, 109);
+}
+#resolvedButton:hover {
+  color: white;
+}
+
+/* SUB COMPONENTS / DISPLAY WINDOWS */
+
+.devTickDiv,
+.usrTickDiv {
+  display: flex;
+  align-items: center;
+  height: 90vh;
+  width: 100vw;
+}
+.ticketsSideNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgb(212, 61, 61);
+  border-radius: 8px;
+  height: 85vh;
+  width: 10vw;
+  margin: 25px;
+}
+
+.ticketsSideNav div {
+  border-radius: 10px;
+  border: 2px solid rgb(212, 61, 61);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9vw;
+  height: 9vw;
+  margin: 10px 10px 0px 10px;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: white;
+}
+.ticketsSideNav div:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
+  border: 2px solid rgb(212, 100, 100);
+  color: rgb(112, 185, 109);
+}
+#resolvedButton:hover {
+  color: white;
+}
+
+.displayWindow {
+  height: 83vh;
+  width: 84vw;
+  background-color: white;
+  border-radius: 15px;
+  padding: 15px;
+}

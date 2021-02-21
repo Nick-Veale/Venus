@@ -1,0 +1,111 @@
+.login,
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.formContainer h2 {
+  color: white;
+  margin: 5px;
+}
+
+h1 {
+  color: rgb(112, 185, 109);
+  font-family: Handlee;
+  font-size: 5em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  align-items: center;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 50px;
+}
+.formInline {
+  display: flex;
+}
+.formInputDiv {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+}
+form input {
+  margin: 5px;
+  height: 50px;
+  width: 300px;
+  padding: 5px;
+  padding-left: 10px;
+  border-radius: 5px;
+  border: 3px solid rgb(212, 61, 61);
+  font-family: "Noto Sans";
+  font-size: 1.2em;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+form input::placeholder {
+  color: grey;
+}
+form input:focus {
+  border: 3px solid rgb(112, 185, 109);
+  outline: none;
+}
+form button {
+  height: 40px;
+  width: 130px;
+  margin: 5px;
+  font-family: "Noto Sans";
+  font-weight: 600;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid rgb(112, 185, 109);
+  background-color: rgb(112, 185, 109);
+  transition: 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 1.2em;
+}
+form button:hover {
+  cursor: pointer;
+  height: 50px;
+  width: 150px;
+  font-size: 1.4em;
+}
+
+.logSigBut {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logSigBut div {
+  font-family: "Noto Sans";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 140px;
+  height: 40px;
+  border-radius: 7px;
+  transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-weight: 600;
+  border: 2px solid white;
+}
+.logSigBut div:hover {
+  cursor: pointer;
+  border: 4px solid rgb(212, 61, 61);
+}
+.switchBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 320px;
+  padding: 6px;
+  margin: 10px;
+}
+
+.switchBox > div {
+  color: white;
+  font-size: 1.3em;
+}
