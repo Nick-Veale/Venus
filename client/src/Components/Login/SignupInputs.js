@@ -46,20 +46,6 @@ export default function SignupInputs(props) {
             }}
           />
         </div>
-        {developer ? (
-          <div className="formInputDiv">
-            <input
-              type="text"
-              placeholder="App Name"
-              required
-              onChange={(e) => {
-                props.appName(e.target.value);
-              }}
-            />
-          </div>
-        ) : (
-          <div></div>
-        )}
       </div>
       <button type="submit">Submit</button>
     </form>

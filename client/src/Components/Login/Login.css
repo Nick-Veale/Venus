@@ -109,3 +109,8 @@ form button:hover {
   color: white;
   font-size: 1.3em;
 }
+
+.formInputDiv .labelDiv {
+  color: white;
+  text-align: center;
+}

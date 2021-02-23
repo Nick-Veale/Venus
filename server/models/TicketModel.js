@@ -8,10 +8,11 @@ const commentSchema = mongoose.Schema({
 
 const ticketSchema = mongoose.Schema({
   creator: { type: Object, required: true },
+  app: { type: mongoose.Schema.Types.ObjectId, ref: "RegApp" },
   description: { type: String, required: true },
   date: { type: Date, default: Date.now() },
   comments: [commentSchema],
-  isNew: { type: Boolean, default: true },
+  recent: { type: Boolean, default: true },
   isResolved: { type: Boolean, default: false },
 });
 

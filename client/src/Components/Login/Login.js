@@ -12,7 +12,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [appName, setAppName] = useState("");
 
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
@@ -34,26 +33,19 @@ export default function Login() {
               setCurrentUser(res.data);
             });
         } else {
-          // Needs WORK! Figure out how to conditionally call API
-          await axios
-            .post("http://localhost:3030/user/signup/appcheck", {
-              app: appName,
+          axios
+            .post("http://localhost:3030/user/signup/developer", {
+              email: email,
+              username: username,
+              password: password,
+              developer: developer,
             })
-            .then(() => {
-              axios
-                .post("http://localhost:3030/user/signup/admin", {
-                  email: email,
-                  username: username,
-                  password: password,
-                  developer: developer,
-                  app: appName,
-                })
-                .then((res) => {
-                  setCurrentUser(res.data);
-                });
+            .then((res) => {
+              console.log("dev signup response");
+              setCurrentUser(res.data);
             })
             .catch((err) => {
-              alert(`Your App didn't match any records. Error:${err}`);
+              alert("Oops! Something went wrong...", err);
             });
         }
       } else {
@@ -91,9 +83,6 @@ export default function Login() {
           }}
           email={(input) => {
             setEmail(input);
-          }}
-          appName={(input) => {
-            setAppName(input);
           }}
         />
       );

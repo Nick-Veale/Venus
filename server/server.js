@@ -7,6 +7,7 @@ require("dotenv/config");
 //  Import Routes
 const userRoute = require("./routes/user");
 const ticketRoute = require("./routes/ticket");
+const appRoute = require("./routes/apps");
 
 // Initialize Apps
 const app = express();
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/user", userRoute);
 app.use("/ticket", ticketRoute);
+app.use("/app", appRoute);
 
 // Connect to DB
 mongoose.connect(process.env.DB_CONNECTION, {

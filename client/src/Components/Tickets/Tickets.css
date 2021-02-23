@@ -1,8 +1,15 @@
 .tickets .ticketsNav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 10vh;
   background-color: rgb(212, 61, 61);
+}
+
+.tickets h3 {
+  color: white;
+  border-bottom: 2px solid white;
+  text-align: center;
 }
 
 .ticketsNav h1 {
@@ -45,7 +52,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid rgb(212, 61, 61);
+  border: 2px solid white;
   border-radius: 8px;
   height: 85vh;
   width: 10vw;
@@ -122,4 +129,89 @@
   background-color: white;
   border-radius: 15px;
   padding: 15px;
+}
+
+.myApps {
+  display: flex;
+  flex-direction: row;
+}
+
+.addAppButton,
+.appTab {
+  border-radius: 15px;
+  height: 50px;
+  width: 100px;
+  padding-bottom: 40px;
+  margin-bottom: -30px;
+  margin-top: 20px;
+  background-color: rgb(212, 61, 61);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.addAppButton div:first-child {
+  position: absolute;
+  height: 30px;
+  width: 4px;
+  background-color: white;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.addAppButton div:last-child {
+  position: absolute;
+  height: 4px;
+  width: 30px;
+  background-color: white;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.addAppButton:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
+}
+.addAppButton:hover div {
+  background-color: rgb(112, 185, 109);
+}
+
+.rotate {
+  transform: rotate(45deg);
+  border-radius: 50%;
+  background-color: ;
+}
+
+.newAppModal {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.newAppModal .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  width: 60vw;
+  color: rgb(112, 185, 109);
+  background-color: rgb(212, 61, 61, 1);
+  filter: none;
+}
+
+.newAppModal .content input,
+.newAppModal .content h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.appTab {
+  color: white;
+  font-weight: 600;
+}
+.appTab:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
 }

@@ -47,6 +47,7 @@ export default function DevTick() {
   return (
     <div className="devTickDiv">
       <div className="ticketsSideNav">
+        <h3>Tickets</h3>
         <div onClick={() => setNavigator(0)} style={setSideNavStyle(0)}>
           New
         </div>

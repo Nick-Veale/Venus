@@ -4,7 +4,11 @@ import Axios from "axios";
 export default function NewTickets() {
   return (
     <div className="displayWindow">
-      <div className="newTicketList">New Tickets Go Here</div>
+      <form>
+        <input type="text" placeholder="Ticket Title" />
+        <input type="text" placeholder="Description" />
+        <button type="submit">Submit Ticket</button>
+      </form>
     </div>
   );
 }
