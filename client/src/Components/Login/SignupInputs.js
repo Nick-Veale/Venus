@@ -14,7 +14,11 @@ export default function SignupInputs(props) {
     <form onSubmit={(e) => props.submit(e)}>
       <div className="switchBox">
         <label className="switch">
-          <input type="checkbox" onChange={() => handleSwitch()} />
+          <input
+            type="checkbox"
+            checked={developer}
+            onChange={() => handleSwitch()}
+          />
           <span className="slider"></span>
         </label>
         <div>Are you a Developer?</div>

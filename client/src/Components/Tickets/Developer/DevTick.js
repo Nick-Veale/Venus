@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
-import NewTickets from "./NewTickets";
-import InProgress from "./InProgress";
+import { UserContext } from "../../../Context/UserContext";
+import NewTickets from "./New";
+import Current from "./Current";
 import Resolved from "./Resolved";
 
 export default function DevTick() {
   const [navigator, setNavigator] = useState(1);
+  const [numberNew, setNumberNew] = useState(0);
 
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
@@ -19,7 +20,6 @@ export default function DevTick() {
         return "rgb(112,185,109)";
       }
     };
-
     const filled = {
       backgroundColor: colorScheme(),
       border: `2px solid ${colorScheme()}`,
@@ -34,13 +34,26 @@ export default function DevTick() {
     }
   };
 
+  const setNumberNewStyle = () => {
+    if (numberNew) {
+      return { display: "flex" };
+    } else {
+      return { display: "none" };
+    }
+  };
+
   const handleDisplay = () => {
     if (navigator === 0) {
-      return <NewTickets />;
+      return (
+        <NewTickets
+          numberNew={numberNew}
+          setNumberNew={(n) => setNumberNew(n)}
+        />
+      );
     } else if (navigator === 1) {
-      return <InProgress />;
+      return <Current setNumberNew={(n) => setNumberNew(n)} />;
     } else if (navigator === 2) {
-      return <Resolved />;
+      return <Resolved setNumberNew={(n) => setNumberNew(n)} />;
     }
   };
 
@@ -49,6 +62,9 @@ export default function DevTick() {
       <div className="ticketsSideNav">
         <h3>Tickets</h3>
         <div onClick={() => setNavigator(0)} style={setSideNavStyle(0)}>
+          <span className="numberNew" style={setNumberNewStyle()}>
+            {numberNew}
+          </span>
           New
         </div>
         <div onClick={() => setNavigator(1)} style={setSideNavStyle(1)}>

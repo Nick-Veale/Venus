@@ -1,17 +1,25 @@
 const mongoose = require("mongoose");
 
-const commentSchema = mongoose.Schema({
-  user: { type: String, required: true },
-  description: { type: String, required: true },
-  date: { type: Date, default: Date.now() },
-});
-
 const ticketSchema = mongoose.Schema({
-  creator: { type: Object, required: true },
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   app: { type: mongoose.Schema.Types.ObjectId, ref: "RegApp" },
+  title: { type: String, required: true },
   description: { type: String, required: true },
   date: { type: Date, default: Date.now() },
-  comments: [commentSchema],
+  comments: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      description: { type: String, required: true },
+      date: { type: Date, default: Date.now() },
+      replies: [
+        {
+          user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          description: { type: String, required: true },
+          date: { type: Date, default: Date.now() },
+        },
+      ],
+    },
+  ],
   recent: { type: Boolean, default: true },
   isResolved: { type: Boolean, default: false },
 });

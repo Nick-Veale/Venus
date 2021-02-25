@@ -112,28 +112,31 @@
   margin: 10px 10px 0px 10px;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   color: white;
+  font-weight: 600;
 }
 .ticketsSideNav div:hover {
   cursor: pointer;
   background-color: rgb(212, 100, 100);
   border: 2px solid rgb(212, 100, 100);
   color: rgb(112, 185, 109);
+  font-size: 1.1em;
 }
 #resolvedButton:hover {
   color: white;
 }
 
 .displayWindow {
-  height: 83vh;
+  height: 87vh;
   width: 84vw;
   background-color: white;
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 15px;
 }
 
 .myApps {
   display: flex;
   flex-direction: row;
+  width: 60vw;
 }
 
 .addAppButton,
@@ -165,6 +168,20 @@
   background-color: white;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+#modalCloseButton div {
+  transform: rotate(45deg);
+}
+
+#modalCloseButton {
+  width: 50px;
+  height: 50px;
+  margin: 0px;
+  padding-bottom: 0px;
+  border-radius: 50%;
+  position: relative;
+  bottom: 42vh;
+  right: 10px;
+}
 
 .addAppButton:hover {
   cursor: pointer;
@@ -177,7 +194,6 @@
 .rotate {
   transform: rotate(45deg);
   border-radius: 50%;
-  background-color: ;
 }
 
 .newAppModal {
@@ -198,9 +214,13 @@
   width: 60vw;
   color: rgb(112, 185, 109);
   background-color: rgb(212, 61, 61, 1);
+  border-radius: 20px;
   filter: none;
 }
 
+.newAppModal .content h3 {
+  border-bottom: 0px;
+}
 .newAppModal .content input,
 .newAppModal .content h3 {
   margin-top: 0px;
@@ -210,8 +230,97 @@
 .appTab {
   color: white;
   font-weight: 600;
+  display: flex;
+  flex-direction: column;
 }
 .appTab:hover {
   cursor: pointer;
   background-color: rgb(212, 100, 100);
+}
+.appTab:hover > .removeX {
+  display: flex;
+}
+.appTab .text {
+  position: absolute;
+}
+.removeX {
+  position: relative;
+  display: flex;
+  right: 45%;
+  top: -20px;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  height: 20px;
+  width: 20px;
+  background-color: rgb(212, 61, 61);
+  display: none;
+  border-radius: 50%;
+  transform: scale(1);
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 2px 2px 10px rgb(0, 0, 0, 0.4);
+}
+.removeX div {
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  background-color: white;
+}
+.removeX div:first-child {
+  transform: rotate(45deg);
+}
+.removeX div:last-child {
+  transform: rotate(-45deg);
+}
+.removeX:hover {
+  transform: scale(1.2);
+}
+
+.searchResult {
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  background-color: rgb(212, 61, 61);
+  color: white;
+  border: 2px solid white;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.searchResult:hover {
+  cursor: pointer;
+  background-color: rgb(212, 100, 100);
+  border: 4px solid white;
+}
+
+.numberNew {
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(112, 185, 109);
+  border-radius: 50%;
+  color: white;
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+}
+
+.ticketsBeingShown {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1em;
+  color: rgb(0, 0, 0, 0.2);
+  margin-top: 20px;
+  text-decoration: underline;
+}
+
+.leftSide b {
+  color: rgb(0, 0, 0, 0.4);
+}
+
+.leftSide {
+  width: 610px;
+}
+
+.modalOr {
+  text-align: center;
 }

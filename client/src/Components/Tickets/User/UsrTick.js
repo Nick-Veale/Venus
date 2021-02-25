@@ -32,7 +32,7 @@ export default function UsrTick() {
 
   const handleDisplay = () => {
     if (navigator === 0) {
-      return <CreateTicket />;
+      return <CreateTicket setNavigator={(n) => setNavigator(n)} />;
     } else if (navigator === 1) {
       return <MyTickets />;
     }

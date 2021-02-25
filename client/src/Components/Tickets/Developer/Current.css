@@ -1,0 +1,199 @@
+.currentTicketDiv {
+  display: flex;
+}
+.currentTickets {
+  height: 10vh;
+  width: 30vw;
+  margin: 10px;
+  border: 0px;
+  background-color: rgb(212, 61, 61);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgb(0, 0, 0, 0.4);
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.currentTickets:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+  box-shadow: 2px 5px 10px rgb(0, 0, 0, 0.4);
+}
+.currentTickets div {
+  margin: 5px;
+}
+.currentTickets .title {
+  color: white;
+  height: 25px;
+  overflow: hidden;
+  font-weight: 600;
+}
+.currentTickets .description {
+  color: white;
+  height: 25px;
+  overflow: hidden;
+  font-weight: 300;
+}
+.currentTickets .date {
+  color: rgb(255, 255, 255, 0.4);
+  height: 25px;
+}
+
+.currentTicketDiv .rightSide {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.rightSide .selectedTicket .self {
+  width: 45vw;
+  padding: 10px;
+  border: 8px solid rgb(212, 61, 61);
+  border-radius: 10px;
+  border-bottom-left-radius: 0px;
+}
+
+.selectedTicket .self b {
+  color: rgb(0, 0, 0, 0.4);
+}
+
+.selectedTicket .title {
+  font-weight: 600;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+
+.self .upperContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.upperContainer .markAsResolved {
+  display: flex;
+  border: 2px solid rgb(112, 185, 109);
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.markAsResolved div {
+  font-weight: 600;
+  color: grey;
+}
+.markAsResolved input {
+}
+
+.ticketComment {
+  border: 4px solid rgb(212, 61, 61, 0.5);
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  min-height: 5vh;
+  max-height: 10vh;
+  margin: 10px 10px 0px 40px;
+  padding: 10px;
+  width: 42vw;
+}
+.ticketComment div {
+  margin-bottom: 5px;
+}
+.ticketComment div:last-child {
+  color: grey;
+}
+.ticketComment:hover {
+  cursor: pointer;
+}
+
+.replies {
+  overflow: hidden;
+}
+
+.replies .reply {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: white;
+  border: 4px solid rgb(212, 61, 61, 0.5);
+  width: 39vw;
+  margin: -4px 10px -2px 80px;
+  padding: 10px;
+  height: auto;
+  overflow: hidden;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.reply .date {
+  color: grey;
+  margin: 5px 0px 0px 0px;
+}
+
+.commentReplyForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(212, 61, 61, 0.5);
+  border-radius: 10px;
+  margin: 0px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  width: 39vw;
+  margin: 0px 10px 10px 80px;
+  height: auto;
+  overflow: hidden;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.commentReplyForm input {
+  width: 40vw;
+  max-width: 40vw;
+  height: auto;
+  border: 4px solid rgb(212, 61, 61, 0.5);
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.commentReplyForm button {
+  height: auto;
+  width: auto;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.commentReplyForm button:hover {
+  height: auto;
+  width: auto;
+}
+
+.selectedTicket .comments .newCommentForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(212, 61, 61);
+  border-radius: 10px;
+  margin: 0px;
+  margin-bottom: 10px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  width: 44vw;
+}
+.selectedTicket .comments .newCommentForm input {
+  width: 39vw;
+  max-width: 39vw;
+  height: auto;
+}
+.selectedTicket .comments .newCommentForm button {
+  height: auto;
+  width: auto;
+}
+
+.commentList {
+  height: 65vh;
+  overflow-y: scroll;
+}
+
+.leftSide {
+  height: 85vh;
+  overflow-y: scroll;
+  overflow-x: visible;
+}
+.leftSide::-webkit-scrollbar {
+  display: none;
+}

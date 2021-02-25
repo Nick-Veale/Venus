@@ -56,7 +56,9 @@ form input:focus {
 }
 form button {
   height: 40px;
-  width: 130px;
+  width: auto;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 5px;
   font-family: "Noto Sans";
   font-weight: 600;
@@ -70,7 +72,6 @@ form button {
 form button:hover {
   cursor: pointer;
   height: 50px;
-  width: 150px;
   font-size: 1.4em;
 }
 
@@ -113,4 +114,18 @@ form button:hover {
 .formInputDiv .labelDiv {
   color: white;
   text-align: center;
+}
+
+.removeX {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 10px;
+  display: none;
+  height: 20px;
+  width: 20px;
+  background-color: rgb(212, 61, 61);
+  display: flex;
+  border-radius: 50%;
 }

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Ticket = require("./TicketModel");
 
 const AppSchema = mongoose.Schema({
   appName: { type: String, required: true, unique: true },

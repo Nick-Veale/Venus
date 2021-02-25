@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import DevTick from "./DevTick.js";
-import UsrTick from "./UsrTick.js";
+import DevTick from "./Developer/DevTick.js";
+import UsrTick from "./User/UsrTick.js";
 import { UserContext } from "../../Context/UserContext";
 import { AppContext } from "../../Context/AppContext";
 import { Redirect } from "react-router-dom";
@@ -28,20 +28,22 @@ export default function Tickets() {
         });
   }, [appSearch]);
 
-  // Needs a lot of work
+  //Fetching Tabs
   useEffect(() => {
-    Promise.all(
-      currentUser.apps.map(async (appid) => {
-        await axios
-          .post("http://localhost:3030/app/searchid", {
-            appid: appid,
-          })
-          .then((app) => {
-            console.log(app.data);
-            setMyApps([...myApps, app.data]);
-          });
-      })
-    );
+    const anAsyncFunction = async (appid) => {
+      const thing = await axios.post("http://localhost:3030/app/searchid", {
+        appid: appid,
+      });
+      return thing.data;
+    };
+
+    currentUser &&
+      Promise.all(currentUser.apps.map((appid) => anAsyncFunction(appid))).then(
+        (values) => {
+          console.log(values);
+          setMyApps(values);
+        }
+      );
     console.log(myApps);
   }, [currentUser]);
 
@@ -90,13 +92,19 @@ export default function Tickets() {
       .then((res) => {
         console.log(res.data);
         setCurrentUser(res.data);
+        setAppSearch("");
+        setSearchResults("");
       });
   };
 
   const handleSearchResults =
     searchResults &&
     searchResults.map((item) => (
-      <button className="searchResult" onClick={() => handleAppClick(item)}>
+      <button
+        className="searchResult"
+        onClick={() => handleAppClick(item)}
+        key={item._id}
+      >
         {item.appName}
       </button>
     ));
@@ -119,16 +127,41 @@ export default function Tickets() {
     }
   };
 
-  const handleAppTabs = myApps.map((item) => (
-    <div
-      className="appTab"
-      onClick={() => setCurrentApp(item)}
-      style={handleAppTabStyle(item._id)}
-      key={item._id}
-    >
-      {item.appName}
-    </div>
-  ));
+  const removeAppTab = async (item) => {
+    await axios
+      .post("http://localhost:3030/app/removeapp", {
+        appid: item._id,
+        userid: currentUser._id,
+      })
+      .then((res) => {
+        setCurrentUser(res.data);
+        setCurrentApp(null);
+      });
+  };
+
+  const handleSetCurrentApp = (app) => {
+    app === currentApp ? setCurrentApp(null) : setCurrentApp(app);
+  };
+
+  const handleAppTabs = myApps.map(
+    (item) =>
+      myApps[0] && (
+        <div
+          className="appTab"
+          onClick={() => handleSetCurrentApp(item)}
+          style={handleAppTabStyle(item._id)}
+          key={item._id}
+        >
+          <div className="removeX" onClick={() => removeAppTab(item)}>
+            <div className="x" />
+            <div className="y" />
+          </div>
+          <div className="text">{item.appName}</div>
+        </div>
+      )
+  );
+
+  !myApps && setCurrentApp(null);
 
   if (!currentUser) {
     return <Redirect to="/" />;
@@ -136,45 +169,49 @@ export default function Tickets() {
     return (
       <div className="tickets">
         <div className="newAppModal" style={modalStyles()}>
-          <div
-            className="addAppButton rotate"
-            onClick={() => {
-              setModal(!modal);
-            }}
-          >
-            <div />
-            <div />
-          </div>
           <div className="content">
             <h3>Search for an App to Add to your session.</h3>
             <form className="modalForm">
               <input
                 type="text"
                 placeholder="Search Apps"
+                value={appSearch}
                 onChange={(e) => setAppSearch(e.target.value)}
               />
             </form>
             {searchResults ? (
               <div>{handleSearchResults}</div>
             ) : (
-              <div>
-                <h4>or...</h4>
-                <h3>Register a new App</h3>
-                <form
-                  className="modalForm"
-                  onSubmit={(e) => handleRegisterApp(e)}
-                >
-                  <input
-                    type="text"
-                    placeholder="New App Name"
-                    onChange={(e) => {
-                      setRegApp(e.target.value);
-                    }}
-                  />
-                  <button type="submit">Register App</button>
-                </form>
-              </div>
+              currentUser.isDeveloper && (
+                <div>
+                  <h4 className="modalOr">or...</h4>
+                  <h3>Register a new App</h3>
+                  <form
+                    className="modalForm"
+                    onSubmit={(e) => handleRegisterApp(e)}
+                  >
+                    <input
+                      type="text"
+                      placeholder="New App Name"
+                      onChange={(e) => {
+                        setRegApp(e.target.value);
+                      }}
+                    />
+                    <button type="submit">Register App</button>
+                  </form>
+                </div>
+              )
             )}
+          </div>
+          <div
+            className="addAppButton"
+            id="modalCloseButton"
+            onClick={() => {
+              setModal(!modal);
+            }}
+          >
+            <div />
+            <div />
           </div>
         </div>
         <nav className="ticketsNav">
@@ -189,7 +226,6 @@ export default function Tickets() {
           <div className="myAccount">
             <div>My Account</div>
             <div onClick={() => logout()}>Logout</div>
-            <div>Notifications</div>
           </div>
         </nav>
         <div className="ticketsDisplay">

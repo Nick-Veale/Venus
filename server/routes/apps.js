@@ -6,20 +6,7 @@ const User = require("../models/UserModel");
 router.post("/register", async (req, res) => {
   console.log(req.body);
 
-  const creator = await User.findOne(
-    { _id: req.body.creator._id },
-    (err, user) => {
-      if (err) {
-        console.log(`An Error has Occured ${err}`);
-        res.status(500).send();
-      }
-      if (!user) {
-        console.log(`User does not exist`);
-        res.status(404).send();
-      }
-      return user;
-    }
-  );
+  const creator = await User.findOne({ _id: req.body.creator._id });
 
   const app = new RegApp({
     appName: req.body.appName,
@@ -66,6 +53,20 @@ router.post("/adduser", async (req, res) => {
   await user.save();
 
   res.status(200).send(user);
+});
+
+router.post("/removeapp", async (req, res) => {
+  console.log("remove-init");
+  console.log(req.body);
+
+  const user = await User.updateOne(
+    { _id: req.body.userid },
+    { $pullAll: { apps: [req.body.appid] } }
+  );
+
+  const responseMan = await User.findOne({ _id: req.body.userid });
+
+  res.status(200).send(responseMan);
 });
 
 module.exports = router;
