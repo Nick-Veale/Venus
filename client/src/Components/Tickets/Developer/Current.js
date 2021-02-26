@@ -30,11 +30,14 @@ export default function InProgress(props) {
           props.setNumberNew(newLength);
           if (currentApp) {
             const filteredArray = masterArray.filter(
-              (item) => !item.recent && currentApp._id == item.app
+              (item) =>
+                !item.recent && currentApp._id == item.app && !item.isResolved
             );
             setCurrentTickets(filteredArray);
           } else {
-            const filteredArray = masterArray.filter((item) => !item.recent);
+            const filteredArray = masterArray.filter(
+              (item) => !item.recent && !item.isResolved
+            );
             setCurrentTickets(filteredArray);
           }
         }
@@ -47,13 +50,17 @@ export default function InProgress(props) {
       key={item._id}
       onClick={() => setSelectedTicket(item)}
     >
+      <div className="user">
+        <b>User: </b>
+        {item.creatorname}
+      </div>
       <div className="title">
         <b>Title: </b>
         {item.title}
       </div>
       <div className="description">
         <b>Description: </b>
-        {item.description}
+        {item.description.slice(0, 55)}...
       </div>
       <div className="date">
         <b>Date: </b>
@@ -74,7 +81,6 @@ export default function InProgress(props) {
         console.log(res.data);
         return res.data;
       });
-
     setSelectedTicket(response);
     setNewComment("");
   };
@@ -99,16 +105,6 @@ export default function InProgress(props) {
     setNewReply("");
   };
 
-  const getCreator = async (id) => {
-    const response = await axios
-      .post("http://localhost:3030/ticket/getcreator", {
-        id: id,
-      })
-      .then((res) => {
-        // FINISH THIS THING
-      });
-  };
-
   const showReplies = (id) => {
     if (selectedComment) {
       if (id == selectedComment._id) {
@@ -120,6 +116,7 @@ export default function InProgress(props) {
       return { height: "0px" };
     }
   };
+
   const handleRepliesHelper = (comment) => {
     if (comment.replies.length > 0 && selectedComment === comment) {
       return `Click to hide ${comment.replies.length} replies`;
@@ -127,6 +124,16 @@ export default function InProgress(props) {
       return `Click to view ${comment.replies.length} replies`;
     } else {
       return `Click to add reply`;
+    }
+  };
+
+  const handleRepliesStyles = (comment) => {
+    if (comment.replies.length > 0 && selectedComment === comment) {
+      return { color: "rgb(212,61,61)" };
+    } else if (comment.replies.length > 0) {
+      return { color: "rgb(112,185,109)" };
+    } else {
+      return { color: "grey" };
     }
   };
 
@@ -141,16 +148,18 @@ export default function InProgress(props) {
           className="ticketComment"
           key={comment._id}
         >
-          {/* <div className="commentor">{comment.user}</div> */}
+          <div className="commentor">{comment.username}</div>
           <div className="description">{comment.description}</div>
           <div className="date">{comment.date}</div>
-          <div className="replies">{handleRepliesHelper(comment)}</div>
+          <div className="replies" style={handleRepliesStyles(comment)}>
+            {handleRepliesHelper(comment)}
+          </div>
         </div>
         <div className="replies" style={showReplies(comment._id)}>
           {comment.replies.map((reply) => (
             <div className="reply">
               <div className="description">{reply.description}</div>
-              {/* <div className="user">{reply.user}</div> */}
+              <div className="user">{reply.username}</div>
               <div className="date">{reply.date}</div>
             </div>
           ))}
@@ -176,9 +185,10 @@ export default function InProgress(props) {
     await axios
       .post("http://localhost:3030/ticket/resolve", {
         ticket: selectedTicket._id,
+        bool: !selectedTicket.isResolved,
       })
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
+        setSelectedTicket(null);
       });
   };
 
@@ -197,12 +207,43 @@ export default function InProgress(props) {
           <div className="selectedTicket">
             <div className="self">
               <div className="upperContainer">
-                <div className="title">{selectedTicket.title}</div>
-                <div className="markAsResolved">
-                  <div>Resolve Ticket</div>
-                  <input
-                    type="checkbox"
-                    onChange={() => handleResolveTicket()}
+                <div className="leftDiv">
+                  <div className="user">{selectedTicket.creatorname}</div>
+                  <div className="title">{selectedTicket.title}</div>
+                </div>
+                <div
+                  className="markAsResolved"
+                  onClick={() => handleResolveTicket()}
+                  style={
+                    selectedTicket.isResolved
+                      ? {
+                          border: "4px solid rgb(112,185,109)",
+                        }
+                      : {
+                          border: "4px solid rgb(212,61,61)",
+                        }
+                  }
+                >
+                  <div
+                    style={
+                      selectedTicket.isResolved
+                        ? {
+                            color: "rgb(112,185,109)",
+                          }
+                        : { color: "rgb(212,61,61" }
+                    }
+                  >
+                    {selectedTicket.isResolved
+                      ? "Reopen Ticket"
+                      : "Resolve Ticket"}
+                  </div>
+                  <div
+                    className="resolveTicketButton"
+                    style={
+                      selectedTicket.isResolved
+                        ? { backgroundColor: "rgb(112,185,109)" }
+                        : { backgroundColor: "rgb(212,61,61)" }
+                    }
                   />
                 </div>
               </div>

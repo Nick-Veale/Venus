@@ -27,11 +27,14 @@ export default function NewTickets(props) {
           let masterArray = values.flat(1);
           if (currentApp) {
             const filteredArray = masterArray.filter(
-              (item) => item.recent && currentApp._id == item.app
+              (item) =>
+                item.recent && currentApp._id == item.app && !item.isResolved
             );
             setCurrentTickets(filteredArray);
           } else {
-            const filteredArray = masterArray.filter((item) => item.recent);
+            const filteredArray = masterArray.filter(
+              (item) => item.recent && !item.isResolved
+            );
             setCurrentTickets(filteredArray);
           }
         }
@@ -86,13 +89,17 @@ export default function NewTickets(props) {
       key={item._id}
       onClick={() => setSelectedTicket(item)}
     >
+      <div className="user">
+        <b>User: </b>
+        {item.creatorname}
+      </div>
       <div className="title">
         <b>Title: </b>
         {item.title}
       </div>
       <div className="description">
         <b>Description: </b>
-        {item.description}
+        {item.description.slice(0, 55)}...
       </div>
       <div className="date">
         <b>Date: </b>
@@ -106,15 +113,15 @@ export default function NewTickets(props) {
     selectedTicket.comments.map((comment) => (
       <div onClick={() => setSelectedComment(comment)}>
         <div className="ticketComment" key={comment._id}>
-          {/* <div className="commentor">{comment.user}</div> */}
+          <div className="commentor">{comment.username}</div>
           <div className="description">{comment.description}</div>
           <div className="date">{comment.date}</div>
         </div>
         <div className="replies">
           {comment.replies.map((reply) => (
             <div className="reply" key={reply._id}>
+              <div className="user">{reply.username}</div>
               <div className="description">{reply.description}</div>
-              {/* <div className="user">{reply.user}</div> */}
               <div className="date">{reply.date}</div>
             </div>
           ))}
@@ -136,6 +143,17 @@ export default function NewTickets(props) {
       </div>
     ));
 
+  const handleResolveTicket = async () => {
+    await axios
+      .post("http://localhost:3030/ticket/resolve", {
+        ticket: selectedTicket._id,
+        bool: !selectedTicket.isResolved,
+      })
+      .then(() => {
+        setSelectedTicket(null);
+      });
+  };
+
   return (
     <div className="currentTicketDiv">
       <div className="leftSide">
@@ -150,9 +168,46 @@ export default function NewTickets(props) {
         {selectedTicket && (
           <div className="selectedTicket">
             <div className="self">
-              <div className="title">
-                <b>Title: </b>
-                {selectedTicket.title}
+              <div className="upperContainer">
+                <div className="leftDiv">
+                  <div className="user">{selectedTicket.creatorname}</div>
+                  <div className="title">{selectedTicket.title}</div>
+                </div>
+                <div
+                  className="markAsResolved"
+                  onClick={() => handleResolveTicket()}
+                  style={
+                    selectedTicket.isResolved
+                      ? {
+                          border: "4px solid rgb(112,185,109)",
+                        }
+                      : {
+                          border: "4px solid rgb(212,61,61)",
+                        }
+                  }
+                >
+                  <div
+                    style={
+                      selectedTicket.isResolved
+                        ? {
+                            color: "rgb(112,185,109)",
+                          }
+                        : { color: "rgb(212,61,61" }
+                    }
+                  >
+                    {selectedTicket.isResolved
+                      ? "Reopen Ticket"
+                      : "Resolve Ticket"}
+                  </div>
+                  <div
+                    className="resolveTicketButton"
+                    style={
+                      selectedTicket.isResolved
+                        ? { backgroundColor: "rgb(112,185,109)" }
+                        : { backgroundColor: "rgb(212,61,61)" }
+                    }
+                  />
+                </div>
               </div>
               <div className="description">
                 <b>Description: </b>

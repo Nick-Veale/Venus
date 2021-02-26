@@ -11,7 +11,8 @@ router.post("/newticket", async (req, res) => {
   const app = await RegApp.findOne({ _id: req.body.app._id });
 
   const ticket = new Ticket({
-    creator: creator,
+    creatorid: creator,
+    creatorname: creator.username,
     app: app,
     title: req.body.title,
     description: req.body.description,
@@ -31,7 +32,7 @@ router.post("/newticket", async (req, res) => {
 
 router.post("/mytickets", async (req, res) => {
   console.log("ticket-fetch");
-  ticketList = await Ticket.find({ creator: req.body.userid });
+  ticketList = await Ticket.find({ creatorid: req.body.userid });
   res.status(200).send(ticketList);
 });
 
@@ -52,7 +53,8 @@ router.post("/addcomment", async (req, res) => {
   const user = await User.findOne({ _id: req.body.userid });
 
   const comment = {
-    user: user,
+    userid: user,
+    username: user.username,
     description: req.body.description,
     date: Date.now(),
     replies: [],
@@ -74,7 +76,8 @@ router.post("/addreply", async (req, res) => {
   const user = await User.findOne({ _id: req.body.userid });
 
   const reply = {
-    user: user,
+    userid: user,
+    username: user.username,
     description: req.body.description,
   };
 
@@ -86,6 +89,21 @@ router.post("/addreply", async (req, res) => {
   const responseObject = await Ticket.findOne({ _id: req.body.ticket });
 
   res.status(200).send(responseObject);
+});
+
+router.post("/getcreator", async (req, res) => {
+  const user = await User.findOne({ _id: req.body.id });
+  res.status(200).send(user);
+});
+
+router.post("/resolve", async (req, res) => {
+  await Ticket.updateOne(
+    { _id: req.body.ticket },
+    { isResolved: req.body.bool }
+  );
+  const ticket = await Ticket.findOne({ _id: req.body.ticket });
+
+  res.status(200).send(ticket);
 });
 
 module.exports = router;

@@ -13,18 +13,26 @@ export default function MyTickets() {
   const { currentApp, setCurrentApp } = useContext(AppContext);
 
   useEffect(() => {
-    const getTickets = async () =>
-      await axios
+    const getTickets = async () => {
+      const masterList = await axios
         .post("http://localhost:3030/ticket/mytickets", {
           userid: currentUser._id,
         })
         .then((res) => {
           console.log(res.data);
-          setMyTickets(res.data);
+          if (currentApp) {
+            const filteredList = res.data.filter(
+              (item) => item.app == currentApp._id
+            );
+            return filteredList;
+          } else {
+            return res.data;
+          }
         });
-
+      setMyTickets(masterList);
+    };
     getTickets();
-  }, []);
+  }, [currentApp]);
 
   const ticketList = myTickets.map((item) => (
     <div
@@ -86,21 +94,8 @@ export default function MyTickets() {
         <div className="ticketDisplayDiv">
           <div className="filterDiv">
             {currentApp ? (
-              <div className="divWithSwitch">
-                <div className="ticketsShowing">
-                  Showing Tickets for {currentApp.appName}
-                </div>
-                <div className="switchBox">
-                  <div>Show all</div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={showAll}
-                      onChange={() => setShowAll(!showAll)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </div>
+              <div className="ticketsShowing">
+                Showing Tickets for {currentApp.appName}
               </div>
             ) : (
               <div className="divWithSwitch">

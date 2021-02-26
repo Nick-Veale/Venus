@@ -54,6 +54,7 @@ export default function NewTickets(props) {
             type="textarea"
             onChange={(e) => setTicketDesc(e.target.value)}
             value={ticketDesc}
+            placeholder="Describe the issue you are experiencing"
             required
           />
           <button type="submit">Submit Ticket</button>

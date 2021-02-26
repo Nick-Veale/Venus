@@ -14,19 +14,21 @@
 
 .ticketsNav h1 {
   color: rgb(112, 185, 109);
-  font-size: 2.6em;
-  margin-left: 20px;
+  font-size: 4em;
+  margin-left: 45px;
+  margin-top: 70px;
+  text-align: center;
 }
 .ticketsNav .myAccount {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .ticketsNav .myAccount div {
   color: white;
   font-weight: 600;
-  margin: 20px;
+  margin: 10px;
+  margin-right: 20px;
   border: 2px solid white;
   height: 40px;
   width: 120px;

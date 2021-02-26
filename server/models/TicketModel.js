@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = mongoose.Schema({
-  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  creatorid: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  creatorname: { type: String, required: true, default: "Anonymous" },
   app: { type: mongoose.Schema.Types.ObjectId, ref: "RegApp" },
   title: { type: String, required: true },
   description: { type: String, required: true },
   date: { type: Date, default: Date.now() },
   comments: [
     {
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      userid: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      username: { type: String, required: true, default: "Anonymous" },
       description: { type: String, required: true },
       date: { type: Date, default: Date.now() },
       replies: [
         {
-          user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          userid: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          username: { type: String, required: true, default: "Anonymous" },
           description: { type: String, required: true },
           date: { type: Date, default: Date.now() },
         },
