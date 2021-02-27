@@ -47,6 +47,7 @@ export default function NewTickets(props) {
             type="text"
             onChange={(e) => setTicketTitle(e.target.value)}
             value={ticketTitle}
+            placeholder="Give a title for your issue"
             required
           />
           <h2 className="ticketLabel">Description</h2>

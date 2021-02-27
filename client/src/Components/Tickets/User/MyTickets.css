@@ -15,7 +15,9 @@
   justify-content: flex-start;
 }
 .filterDiv .ticketsShowing {
-  font-size: 1.2em;
+  font-size: 1em;
+  color: rgb(0, 0, 0, 0.2);
+  text-align: center;
 }
 .filterDiv .divWithSwitch {
   width: 30vw;
@@ -27,7 +29,7 @@
 }
 
 .ticketListItem {
-  height: 10vh;
+  height: 7vh;
   width: 30vw;
   margin: 10px;
   border: 0px;
@@ -41,29 +43,21 @@
 .ticketListItem:hover {
   cursor: pointer;
   transform: scale(1.01);
-  box-shadow: 8px 8px 10px rgb(0, 0, 0, 0.4);
+  box-shadow: 2px 8px 10px rgb(0, 0, 0, 0.4);
 }
 
 .ticketListItem .ticketTitle {
-  font-size: 1.5em;
   font-weight: 600;
   color: white;
 }
 
 .ticketListItem .ticketDescription {
   color: white;
-  height: 20px;
   overflow: hidden;
 }
 
 .ticketListItem .ticketDate {
-  color: rgb(212, 150, 150);
-  top: 30px;
-  position: relative;
-  font-size: 0.8em;
-  width: 140px;
-  height: 20px;
-  overflow: hidden;
+  color: rgb(255, 255, 255, 0.4);
 }
 
 .myTicketsDiv .lowerDisplay {
@@ -75,19 +69,16 @@
   height: 80vh;
 }
 .selectedTicketDisplay {
-  height: 80vh;
+  height: 85vh;
   width: 45vw;
 }
 .selectedTicketDisplay .self {
-  height: 75vh;
+  height: 80vh;
   width: auto;
   margin: 10px;
-  border: 4px solid rgb(212, 61, 61);
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 2px 2px 5px rgb(0, 0, 0, 0.4);
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
 }
 .selectedTicketDisplay .title {
@@ -117,8 +108,9 @@
 
 .self .comments {
   margin-top: 20px;
-  height: 45vh;
+  height: 63vh;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .ticketComment .description {
@@ -128,4 +120,13 @@
 .ticketListDiv {
   overflow-y: scroll;
   height: 75vh;
+}
+
+.bottomFeather {
+  background: linear-gradient(to bottom, rgb(0, 0, 0, 0), #fff);
+  position: absolute;
+  bottom: 48px;
+  z-index: 1;
+  height: 100px;
+  width: 31.8vw;
 }

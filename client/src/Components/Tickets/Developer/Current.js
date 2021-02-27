@@ -95,6 +95,7 @@ export default function InProgress(props) {
         comment: selectedComment._id,
       })
       .then((res) => {
+        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -103,6 +104,7 @@ export default function InProgress(props) {
       });
     setSelectedTicket(response);
     setNewReply("");
+    setSelectedComment(selectedComment);
   };
 
   const showReplies = (id) => {
@@ -151,15 +153,18 @@ export default function InProgress(props) {
           <div className="commentor">{comment.username}</div>
           <div className="description">{comment.description}</div>
           <div className="date">{comment.date}</div>
-          <div className="replies" style={handleRepliesStyles(comment)}>
+          <div
+            className="clickToViewReplies"
+            style={handleRepliesStyles(comment)}
+          >
             {handleRepliesHelper(comment)}
           </div>
         </div>
         <div className="replies" style={showReplies(comment._id)}>
           {comment.replies.map((reply) => (
             <div className="reply">
-              <div className="description">{reply.description}</div>
               <div className="user">{reply.username}</div>
+              <div className="description">{reply.description}</div>
               <div className="date">{reply.date}</div>
             </div>
           ))}

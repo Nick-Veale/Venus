@@ -8,6 +8,8 @@ export default function MyTickets() {
   const [myTickets, setMyTickets] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState();
+  const [selectedComment, setSelectedComment] = useState();
+  const [newReply, setNewReply] = useState("");
 
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { currentApp, setCurrentApp } = useContext(AppContext);
@@ -19,7 +21,6 @@ export default function MyTickets() {
           userid: currentUser._id,
         })
         .then((res) => {
-          console.log(res.data);
           if (currentApp) {
             const filteredList = res.data.filter(
               (item) => item.app == currentApp._id
@@ -32,7 +33,7 @@ export default function MyTickets() {
       setMyTickets(masterList);
     };
     getTickets();
-  }, [currentApp]);
+  }, [currentApp, selectedTicket, currentUser]);
 
   const ticketList = myTickets.map((item) => (
     <div
@@ -45,46 +46,116 @@ export default function MyTickets() {
       </div>
       <div className="ticketDescription">
         <b>Description: </b>
-        {item.description}
+        {item.description.slice(0, 42)}...
       </div>
       <div className="ticketDate">
         <b>Date: </b>
-        {item.date}
+        {item.date.slice(0, 10)}
       </div>
     </div>
   ));
 
-  const isResolved = () => {
-    return selectedTicket.isResolved ? (
-      <div
-        className="status"
-        style={{
-          color: "rgb(112,185,109)",
-          border: "4px solid rgb(112,185,209)",
-        }}
-      >
-        <b>Status: </b> Resolved.
-      </div>
-    ) : (
-      <div
-        className="status"
-        style={{ color: "rgb(212,61,61)", border: "4px solid rgb(212,61,61)" }}
-      >
-        <b>Status: </b> Unresolved.
-      </div>
-    );
+  const handleSubmitReply = async (e) => {
+    e.preventDefault();
+    const response = await axios
+      .post("http://localhost:3030/ticket/addreply", {
+        userid: currentUser._id,
+        description: newReply,
+        ticket: selectedTicket._id,
+        comment: selectedComment._id,
+      })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        alert(`An error has occured.
+        Error: ${err}`);
+      });
+    setSelectedTicket(response);
+    setNewReply("");
+  };
+
+  const showReplies = (id) => {
+    if (selectedComment) {
+      if (id == selectedComment._id) {
+        return { height: "auto" };
+      } else {
+        return { height: "0px" };
+      }
+    } else {
+      return { height: "0px" };
+    }
+  };
+
+  const handleRepliesHelper = (comment) => {
+    if (comment.replies.length > 0 && selectedComment === comment) {
+      return `Click to hide ${comment.replies.length} replies`;
+    } else if (comment.replies.length > 0) {
+      return `Click to view ${comment.replies.length} replies`;
+    } else {
+      return `Click to add reply`;
+    }
+  };
+
+  const handleRepliesStyles = (comment) => {
+    if (comment.replies.length > 0 && selectedComment === comment) {
+      return { color: "rgb(212,61,61)" };
+    } else if (comment.replies.length > 0) {
+      return { color: "rgb(112,185,109)" };
+    } else {
+      return { color: "grey" };
+    }
   };
 
   const commentList =
     selectedTicket &&
-    selectedTicket.comments.map((item) => (
-      <div className="ticketComment" key={item._id}>
-        <div className="user">
-          <b>Developer: </b>
-          {item.user}
+    selectedTicket.comments.map((comment) => (
+      <div>
+        <div
+          className="ticketComment"
+          onClick={() =>
+            setSelectedComment(selectedComment === comment ? null : comment)
+          }
+          key={comment._id}
+        >
+          <div className="user">
+            <b>Developer: </b>
+            {comment.username}
+          </div>
+          <div className="description">{comment.description}</div>
+          <div className="date">{comment.date.slice(0, 10)}</div>
+          <div
+            className="clickToViewReplies"
+            style={handleRepliesStyles(comment)}
+          >
+            {handleRepliesHelper(comment)}
+          </div>
         </div>
-        <div className="description">{item.description}</div>
-        <div className="date">{item.date}</div>
+        <div className="replies" style={showReplies(comment._id)}>
+          {comment.replies.map((reply) => (
+            <div className="reply">
+              <div className="user">{reply.username}</div>
+              <div className="description" style={{ fontSize: "1em" }}>
+                {reply.description}
+              </div>
+              <div className="date">{reply.date}</div>
+            </div>
+          ))}
+          <form
+            className="commentReplyForm"
+            onSubmit={(e) => handleSubmitReply(e)}
+          >
+            <input
+              type="textarea"
+              required
+              onFocus={() => setSelectedComment(comment)}
+              placeholder="Add reply"
+              value={newReply}
+              onChange={(e) => setNewReply(e.target.value)}
+            />
+            <button type="submit">{">"}</button>
+          </form>
+        </div>
       </div>
     ));
 
@@ -92,29 +163,50 @@ export default function MyTickets() {
     <div className="myTicketsDiv">
       <div className="lowerDisplay">
         <div className="ticketDisplayDiv">
-          <div className="filterDiv">
-            {currentApp ? (
-              <div className="ticketsShowing">
-                Showing Tickets for {currentApp.appName}
-              </div>
-            ) : (
-              <div className="divWithSwitch">
-                <div className="ticketsShowing">Showing all Tickets</div>
-              </div>
-            )}
+          <div className="ticketsBeingShown">
+            {currentApp
+              ? `Showing tickets for ${currentApp.appName}`
+              : `Showing all Tickets`}
           </div>
-
           <div className="ticketListDiv"> {ticketList && ticketList}</div>
+          <div className="bottomFeather" />
         </div>
-        {selectedTicket && (
-          <div className="selectedTicketDisplay">
+        <div className="selectedTicketDisplay">
+          {selectedTicket && (
             <div className="self">
-              <div className="titleDiv">
-                <div className="title">
-                  <b>Title: </b>
-                  {selectedTicket.title}
+              <div className="upperContainer">
+                <div className="leftDiv">
+                  <div className="title">
+                    <b>Title: </b>
+                    {selectedTicket.title}
+                  </div>
                 </div>
-                {isResolved()}
+                <div
+                  className="markAsResolved"
+                  style={
+                    selectedTicket.isResolved
+                      ? {
+                          border: "4px solid rgb(112,185,109)",
+                        }
+                      : {
+                          border: "4px solid rgb(212,61,61)",
+                        }
+                  }
+                >
+                  <div
+                    style={
+                      selectedTicket.isResolved
+                        ? {
+                            color: "rgb(112,185,109)",
+                          }
+                        : { color: "rgb(212,61,61" }
+                    }
+                  >
+                    {selectedTicket.isResolved
+                      ? "Reopen Ticket"
+                      : "Resolve Ticket"}
+                  </div>
+                </div>
               </div>
               <div className="description">
                 <b>Description: </b>
@@ -128,8 +220,8 @@ export default function MyTickets() {
                 )}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
