@@ -3,7 +3,7 @@ import DevTick from "./Developer/DevTick.js";
 import UsrTick from "./User/UsrTick.js";
 import { UserContext } from "../../Context/UserContext";
 import { AppContext } from "../../Context/AppContext";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "./Tickets.css";
 import axios from "axios";
 
@@ -224,7 +224,9 @@ export default function Tickets() {
             {handleAppTabs && handleAppTabs}
           </div>
           <div className="myAccount">
-            <div>My Account</div>
+            <Link to="/account" style={{ textDecoration: "none" }}>
+              <div>My Account</div>
+            </Link>
             <div onClick={() => logout()}>Logout</div>
           </div>
         </nav>

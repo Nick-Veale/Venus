@@ -32,6 +32,7 @@ export default function App() {
           <AppContext.Provider value={{ currentApp, setCurrentApp }}>
             <Route path="/tickets" component={Tickets} />
           </AppContext.Provider>
+          <Route path="/account" component={MyAccount} />
         </UserContext.Provider>
       </BrowserRouter>
     </div>
