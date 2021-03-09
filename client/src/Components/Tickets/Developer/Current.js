@@ -11,8 +11,8 @@ export default function InProgress(props) {
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState("");
 
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  const { currentApp, setCurrentApp } = useContext(AppContext);
+  const { currentUser } = useContext(UserContext);
+  const { currentApp } = useContext(AppContext);
 
   useEffect(() => {
     const getTickets = async (appid) => {

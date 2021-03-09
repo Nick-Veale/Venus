@@ -228,3 +228,7 @@
 .leftSide::-webkit-scrollbar {
   display: none;
 }
+
+.description {
+  white-space: pre-line;
+}
