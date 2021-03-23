@@ -3,6 +3,7 @@ import { UserContext } from "../../../Context/UserContext";
 import NewTickets from "./New";
 import Current from "./Current";
 import Resolved from "./Resolved";
+import CreateTicket from "../User/CreateTicket";
 
 export default function DevTick() {
   const [navigator, setNavigator] = useState(1);
@@ -18,6 +19,8 @@ export default function DevTick() {
         return "rgb(212, 100, 100)";
       } else if (navigator === 2) {
         return "rgb(112,185,109)";
+      } else if (navigator === 3) {
+        return "rgb(90,160,80)";
       }
     };
     const filled = {
@@ -34,14 +37,6 @@ export default function DevTick() {
     }
   };
 
-  const setNumberNewStyle = () => {
-    if (numberNew) {
-      return { display: "flex" };
-    } else {
-      return { display: "none" };
-    }
-  };
-
   const handleDisplay = () => {
     if (navigator === 0) {
       return (
@@ -54,15 +49,32 @@ export default function DevTick() {
       return <Current setNumberNew={(n) => setNumberNew(n)} />;
     } else if (navigator === 2) {
       return <Resolved setNumberNew={(n) => setNumberNew(n)} />;
+    } else if (navigator === 3) {
+      return (
+        <CreateTicket
+          setNavigator={(n) => setNavigator(n)}
+          setNumberNew={(n) => setNumberNew(n)}
+        />
+      );
     }
   };
 
   return (
     <div className="devTickDiv">
       <div className="ticketsSideNav">
-        <h3>Tickets</h3>
+        <h3
+          style={{ color: "rgb(182, 50, 50)", borderColor: "rgb(182,50,50)" }}
+        >
+          Tickets
+        </h3>
+        <div onClick={() => setNavigator(3)} style={setSideNavStyle(3)}>
+          Create
+        </div>
         <div onClick={() => setNavigator(0)} style={setSideNavStyle(0)}>
-          <span className="numberNew" style={setNumberNewStyle()}>
+          <span
+            className="numberNew"
+            style={numberNew ? { display: "flex" } : { display: "none" }}
+          >
             {numberNew}
           </span>
           New

@@ -36,7 +36,7 @@ export default function NewTickets(props) {
   };
 
   if (!currentApp) {
-    return <div>Create or Select an App</div>;
+    return <div className="ticketsBeingShown">Create or Select an App</div>;
   } else {
     return (
       <div className="displayWindow">

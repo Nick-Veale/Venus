@@ -151,6 +151,7 @@ export default function NewTickets(props) {
       })
       .then(() => {
         setSelectedTicket(null);
+        props.setNumberNew(props.numberNew === 1 ? null : props.numberNew - 1);
       });
   };
 

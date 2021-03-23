@@ -1,0 +1,69 @@
+.teamView h3 {
+  color: white;
+  border-bottom: 2px solid white;
+  text-align: center;
+}
+
+.teamView .teamViewNav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 10vh;
+  background-color: #d43d3d;
+}
+
+.teamView .teamViewNav h1 {
+  color: #70b96d;
+  font-size: 4em;
+  margin-left: 45px;
+  margin-top: 70px;
+  text-align: center;
+}
+
+.teamView .teamViewNav .myAccount {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.teamView .teamViewNav .myAccount div {
+  color: white;
+  font-weight: 600;
+  margin: 10px;
+  margin-right: 20px;
+  border: 2px solid white;
+  height: 40px;
+  width: 120px;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.teamView .teamViewNav .myAccount div:hover {
+  cursor: pointer;
+  background-color: #d46464;
+  border: 2px solid #d46464;
+  color: #70b96d;
+}
+/*# sourceMappingURL=teamview.css.map */

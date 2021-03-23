@@ -1,0 +1,55 @@
+@import "../../variables";
+
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+.teamView {
+  h3 {
+    color: white;
+    border-bottom: 2px solid white;
+    text-align: center;
+  }
+  .teamViewNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    background-color: rgb(212, 61, 61);
+    h1 {
+      color: rgb(112, 185, 109);
+      font-size: 4em;
+      margin-left: 45px;
+      margin-top: 70px;
+      text-align: center;
+    }
+    .myAccount {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        color: white;
+        font-weight: 600;
+        margin: 10px;
+        margin-right: 20px;
+        border: 2px solid white;
+        height: 40px;
+        width: 120px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        &:hover {
+          cursor: pointer;
+          background-color: rgb(212, 100, 100);
+          border: 2px solid rgb(212, 100, 100);
+          color: rgb(112, 185, 109);
+        }
+      }
+    }
+  }
+}

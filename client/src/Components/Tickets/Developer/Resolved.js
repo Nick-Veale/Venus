@@ -3,6 +3,7 @@ import { AppContext } from "../../../Context/AppContext";
 import { UserContext } from "../../../Context/UserContext";
 import axios from "axios";
 import "./Resolved.css";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export default function Resolved(props) {
   const [selectedTicket, setSelectedTicket] = useState();
@@ -10,6 +11,7 @@ export default function Resolved(props) {
   const [currentTickets, setCurrentTickets] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState("");
+  const [areYouSure, setAreYouSure] = useState(false);
 
   const { currentApp, setCurrentApp } = useContext(AppContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -189,6 +191,23 @@ export default function Resolved(props) {
       });
   };
 
+  const handleDeleteTicket = async () => {
+    await axios
+      .post("http://localhost:3030/ticket/delete", {
+        ticket: selectedTicket._id,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setAreYouSure(false);
+          setSelectedTicket(null);
+        } else {
+          setAreYouSure(false);
+          alert(res.data.message);
+        }
+      });
+  };
+
   return (
     <div className="currentTicketDiv">
       <div className="leftSide">
@@ -199,75 +218,94 @@ export default function Resolved(props) {
         </div>
         {currentTickets && currentTicketDivs}
       </div>
-      <div className="rightSide">
-        {selectedTicket && (
-          <div className="selectedTicket">
-            <div className="self">
-              <div className="upperContainer">
-                <div className="leftDiv">
-                  <div className="user">{selectedTicket.creatorname}</div>
-                  <div className="title">{selectedTicket.title}</div>
-                </div>
-                <div
-                  className="markAsResolved"
-                  onClick={() => handleResolveTicket()}
-                  style={
-                    selectedTicket.isResolved
-                      ? {
-                          border: "4px solid rgb(112,185,109)",
-                        }
-                      : {
-                          border: "4px solid rgb(212,61,61)",
-                        }
-                  }
-                >
+      {areYouSure ? (
+        <div className="areYouSure">
+          <div className="redContainer">
+            <h3>Are you Sure?</h3>
+          </div>
+          <h4>This will permanently delete all record of this ticket.</h4>
+          <div className="yesOrNo">
+            <button onClick={() => handleDeleteTicket()}>Yes</button>
+            <button onClick={() => setAreYouSure(false)}>No</button>
+          </div>
+        </div>
+      ) : (
+        <div className="rightSide">
+          {selectedTicket && (
+            <div className="selectedTicket">
+              <div className="self">
+                <div className="upperContainer">
+                  <div className="leftDiv">
+                    <div className="user">{selectedTicket.creatorname}</div>
+                    <div className="title">{selectedTicket.title}</div>
+                  </div>
                   <div
+                    className="markAsResolved"
+                    onClick={() => handleResolveTicket()}
                     style={
                       selectedTicket.isResolved
                         ? {
-                            color: "rgb(112,185,109)",
+                            border: "4px solid rgb(112,185,109)",
                           }
-                        : { color: "rgb(212,61,61" }
+                        : {
+                            border: "4px solid rgb(212,61,61)",
+                          }
                     }
                   >
-                    {selectedTicket.isResolved
-                      ? "Reopen Ticket"
-                      : "Resolve Ticket"}
+                    <div
+                      style={
+                        selectedTicket.isResolved
+                          ? {
+                              color: "rgb(112,185,109)",
+                            }
+                          : { color: "rgb(212,61,61" }
+                      }
+                    >
+                      {selectedTicket.isResolved
+                        ? "Reopen Ticket"
+                        : "Resolve Ticket"}
+                    </div>
+                    <div
+                      className="resolveTicketButton"
+                      style={
+                        selectedTicket.isResolved
+                          ? { backgroundColor: "rgb(112,185,109)" }
+                          : { backgroundColor: "rgb(212,61,61)" }
+                      }
+                    />
                   </div>
                   <div
-                    className="resolveTicketButton"
-                    style={
-                      selectedTicket.isResolved
-                        ? { backgroundColor: "rgb(112,185,109)" }
-                        : { backgroundColor: "rgb(212,61,61)" }
-                    }
-                  />
+                    className="deleteTicket"
+                    onClick={() => setAreYouSure(true)}
+                  >
+                    <DeleteIcon />
+                  </div>
+                </div>
+                <div className="description">
+                  <b>Description: </b>
+                  {selectedTicket.description}
                 </div>
               </div>
-              <div className="description">
-                <b>Description: </b>
-                {selectedTicket.description}
+              <div className="comments">
+                <form
+                  className="newCommentForm"
+                  onSubmit={(e) => handleSubmitComment(e)}
+                >
+                  <input
+                    type="textarea"
+                    required
+                    onChange={(e) => setNewComment(e.target.value)}
+                    value={newComment}
+                    placeholder="Add Comment"
+                  />
+                  <button type="submit">{">"}</button>
+                </form>
+                <div className="commentList">{commentList}</div>
               </div>
             </div>
-            <div className="comments">
-              <form
-                className="newCommentForm"
-                onSubmit={(e) => handleSubmitComment(e)}
-              >
-                <input
-                  type="textarea"
-                  required
-                  onChange={(e) => setNewComment(e.target.value)}
-                  value={newComment}
-                  placeholder="Add Comment"
-                />
-                <button type="submit">{">"}</button>
-              </form>
-              <div className="commentList">{commentList}</div>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

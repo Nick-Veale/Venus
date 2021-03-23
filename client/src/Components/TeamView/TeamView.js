@@ -1,21 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
-import DevTick from "./Developer/DevTick.js";
-import UsrTick from "./User/UsrTick.js";
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import "./styles/teamview.css";
+import { Redirect, Link } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { AppContext } from "../../Context/AppContext";
-import { Redirect, Link } from "react-router-dom";
-import "./Tickets.css";
-import axios from "axios";
 
-export default function Tickets() {
+export default function TeamView() {
   const [modal, setModal] = useState(false);
-  const [appSearch, setAppSearch] = useState("");
-  const [regApp, setRegApp] = useState("");
-  const [searchResults, setSearchResults] = useState("");
-  const [myApps, setMyApps] = useState([]);
+  const [appSearch, setAppSearch] = useState();
+  const [searchResults, setSearchResults] = useState();
+  const [myApps, setMyApps] = useState();
+  const [regApp, setRegApp] = useState();
 
-  const { currentApp, setCurrentApp } = useContext(AppContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentApp, setCurrentApp } = useContext(AppContext);
 
   useEffect(() => {
     appSearch &&
@@ -59,55 +57,9 @@ export default function Tickets() {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("currentUser");
-    setCurrentUser(null);
+  const handleSetCurrentApp = (app) => {
+    app === currentApp ? setCurrentApp(null) : setCurrentApp(app);
   };
-
-  const handleRegisterApp = (e) => {
-    e.preventDefault();
-    if (regApp) {
-      axios
-        .post("http://localhost:3030/app/register", {
-          appName: regApp,
-          creator: currentUser,
-        })
-        .then((res) => {
-          if (res.status === 201) {
-            alert("App registered Succesully!");
-            console.log(res.data);
-            // setCurrentUser(res.data)
-            setModal(false);
-          }
-        });
-    }
-  };
-
-  const handleAppClick = async (item) => {
-    await axios
-      .post("http://localhost:3030/app/adduser", {
-        app: item,
-        user: currentUser,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setCurrentUser(res.data);
-        setAppSearch("");
-        setSearchResults("");
-      });
-  };
-
-  const handleSearchResults =
-    searchResults &&
-    searchResults.map((item) => (
-      <button
-        className="searchResult"
-        onClick={() => handleAppClick(item)}
-        key={item._id}
-      >
-        {item.appName}
-      </button>
-    ));
 
   const handleAppTabStyle = (id) => {
     const selected = {
@@ -139,35 +91,81 @@ export default function Tickets() {
       });
   };
 
-  const handleSetCurrentApp = (app) => {
-    app === currentApp ? setCurrentApp(null) : setCurrentApp(app);
+  const handleAppTabs =
+    myApps &&
+    myApps.map(
+      (item) =>
+        myApps[0] && (
+          <div
+            className="appTab"
+            onClick={() => handleSetCurrentApp(item)}
+            style={handleAppTabStyle(item._id)}
+            key={item._id}
+          >
+            <div className="removeX" onClick={() => removeAppTab(item)}>
+              <div className="x" />
+              <div className="y" />
+            </div>
+            <div className="text">{item.appName}</div>
+          </div>
+        )
+    );
+
+  const logout = () => {
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
   };
 
-  const handleAppTabs = myApps.map(
-    (item) =>
-      myApps[0] && (
-        <div
-          className="appTab"
-          onClick={() => handleSetCurrentApp(item)}
-          style={handleAppTabStyle(item._id)}
-          key={item._id}
-        >
-          <div className="removeX" onClick={() => removeAppTab(item)}>
-            <div className="x" />
-            <div className="y" />
-          </div>
-          <div className="text">{item.appName}</div>
-        </div>
-      )
-  );
+  const handleAppClick = async (item) => {
+    await axios
+      .post("http://localhost:3030/app/adduser", {
+        app: item,
+        user: currentUser,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setCurrentUser(res.data);
+        setAppSearch("");
+        setSearchResults("");
+      });
+  };
 
-  !myApps && setCurrentApp(null);
+  const handleRegisterApp = (e) => {
+    e.preventDefault();
+    if (regApp) {
+      axios
+        .post("http://localhost:3030/app/register", {
+          appName: regApp,
+          creator: currentUser,
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            alert("App registered Succesully!");
+            console.log(res.data);
+            // setCurrentUser(res.data)
+            setModal(false);
+          }
+        });
+    }
+  };
+
+  const handleSearchResults =
+    searchResults &&
+    searchResults.map((item) => (
+      <button
+        className="searchResult"
+        onClick={() => handleAppClick(item)}
+        key={item._id}
+      >
+        {item.appName}
+      </button>
+    ));
 
   if (!currentUser) {
     return <Redirect to="/" />;
   } else {
     return (
-      <div className="tickets">
+      <div className="teamView">
         <div className="newAppModal" style={modalStyles()}>
           <div className="content">
             <h3>Search for an App to Add to your session.</h3>
@@ -179,7 +177,7 @@ export default function Tickets() {
                 onChange={(e) => setAppSearch(e.target.value)}
               />
             </form>
-            {appSearch ? (
+            {searchResults ? (
               <div>{handleSearchResults}</div>
             ) : (
               currentUser.isDeveloper && (
@@ -214,7 +212,7 @@ export default function Tickets() {
             <div />
           </div>
         </div>
-        <nav className="ticketsNav">
+        <nav className="teamViewNav">
           <h1>Venus</h1>
           <div className="myApps">
             <div className="addAppButton" onClick={() => setModal(!modal)}>
@@ -224,8 +222,8 @@ export default function Tickets() {
             {handleAppTabs && handleAppTabs}
           </div>
           <div className="myAccount">
-            <Link to="/teamview" style={{ textDecoration: "none" }}>
-              <div>Team View</div>
+            <Link to="/tickets" style={{ textDecoration: "none" }}>
+              <div>My Tickets</div>
             </Link>
             <Link to="/account" style={{ textDecoration: "none" }}>
               <div>My Account</div>
@@ -233,9 +231,7 @@ export default function Tickets() {
             <div onClick={() => logout()}>Logout</div>
           </div>
         </nav>
-        <div className="ticketsDisplay">
-          {currentUser.isDeveloper ? <DevTick /> : <UsrTick />}
-        </div>
+        <div className="teamViewDisplay"></div>
       </div>
     );
   }

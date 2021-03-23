@@ -79,10 +79,19 @@ router.post("/getcreator", async (req, res) => {
 router.post("/resolve", async (req, res) => {
   await Ticket.updateOne(
     { _id: req.body.ticket },
-    { isResolved: req.body.bool }
+    { isResolved: req.body.bool, recent: false }
   );
   const ticket = await Ticket.findOne({ _id: req.body.ticket });
   res.status(200).send(ticket);
+});
+
+router.post("/delete", async (req, res) => {
+  try {
+    await Ticket.remove({ _id: req.body.ticket }, { justOne: true });
+    res.status(200).send({ message: "Your Ticket has been deleted" });
+  } catch (error) {
+    res.status(500).send({ message: "An error has occured" });
+  }
 });
 
 module.exports = router;

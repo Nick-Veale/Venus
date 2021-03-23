@@ -5,6 +5,7 @@ import Tickets from "./Components/Tickets/Tickets";
 import { UserContext } from "./Context/UserContext";
 import { AppContext } from "./Context/AppContext";
 import MyAccount from "./Components/MyAccount/MyAccount";
+import TeamView from "./Components/TeamView/TeamView";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -31,6 +32,7 @@ export default function App() {
           <Route exact path="/" component={Login} />
           <AppContext.Provider value={{ currentApp, setCurrentApp }}>
             <Route path="/tickets" component={Tickets} />
+            <Route path="/teamview" component={TeamView} />
           </AppContext.Provider>
           <Route path="/account" component={MyAccount} />
         </UserContext.Provider>

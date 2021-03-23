@@ -50,16 +50,6 @@
   height: 90vh;
   width: 100vw;
 }
-.ticketsSideNav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 2px solid white;
-  border-radius: 8px;
-  height: 85vh;
-  width: 10vw;
-  margin: 25px;
-}
 
 .ticketsSideNav div {
   border-radius: 10px;
