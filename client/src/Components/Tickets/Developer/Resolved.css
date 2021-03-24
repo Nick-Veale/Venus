@@ -60,3 +60,10 @@
   border-bottom: 0px;
   text-decoration: none;
 }
+
+.areYouSureContainer {
+  width: 50vw;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { UserContext } from "../../../Context/UserContext";
 import { AppContext } from "../../../Context/AppContext";
 import axios from "axios";
+import AreYouSure from "../../AreYouSure";
 
 export default function NewTickets(props) {
   const [currentTickets, setCurrentTickets] = useState([]);
@@ -9,6 +10,7 @@ export default function NewTickets(props) {
   const [selectedTicket, setSelectedTicket] = useState();
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState("");
+  const [areYouSure, setAreYouSure] = useState(false);
 
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const { currentApp, setCurrentApp } = useContext(AppContext);
@@ -103,7 +105,7 @@ export default function NewTickets(props) {
       </div>
       <div className="date">
         <b>Date: </b>
-        {item.date}
+        {new Date(item.date).toLocaleString()}
       </div>
     </div>
   ));
@@ -115,14 +117,16 @@ export default function NewTickets(props) {
         <div className="ticketComment" key={comment._id}>
           <div className="commentor">{comment.username}</div>
           <div className="description">{comment.description}</div>
-          <div className="date">{comment.date}</div>
+          <div className="date">{new Date(comment.date).toLocaleString()}</div>
         </div>
         <div className="replies">
           {comment.replies.map((reply) => (
             <div className="reply" key={reply._id}>
               <div className="user">{reply.username}</div>
               <div className="description">{reply.description}</div>
-              <div className="date">{reply.date}</div>
+              <div className="date">
+                {new Date(reply.date).toLocaleString()}
+              </div>
             </div>
           ))}
           <form
@@ -151,6 +155,7 @@ export default function NewTickets(props) {
       })
       .then(() => {
         setSelectedTicket(null);
+        setAreYouSure(false);
         props.setNumberNew(props.numberNew === 1 ? null : props.numberNew - 1);
       });
   };
@@ -166,72 +171,81 @@ export default function NewTickets(props) {
         {currentTickets && currentTicketDivs}
       </div>
       <div className="rightSide">
-        {selectedTicket && (
-          <div className="selectedTicket">
-            <div className="self">
-              <div className="upperContainer">
-                <div className="leftDiv">
-                  <div className="user">{selectedTicket.creatorname}</div>
-                  <div className="title">{selectedTicket.title}</div>
-                </div>
-                <div
-                  className="markAsResolved"
-                  onClick={() => handleResolveTicket()}
-                  style={
-                    selectedTicket.isResolved
-                      ? {
-                          border: "4px solid rgb(112,185,109)",
-                        }
-                      : {
-                          border: "4px solid rgb(212,61,61)",
-                        }
-                  }
-                >
+        {areYouSure ? (
+          <AreYouSure
+            title="Are you sure?"
+            description="This ticket doesn't have any activity yet. Resolving it early could make this issue pass unnoticed"
+            action={() => handleResolveTicket()}
+            cancel={() => setAreYouSure(false)}
+          />
+        ) : (
+          selectedTicket && (
+            <div className="selectedTicket">
+              <div className="self">
+                <div className="upperContainer">
+                  <div className="leftDiv">
+                    <div className="user">{selectedTicket.creatorname}</div>
+                    <div className="title">{selectedTicket.title}</div>
+                  </div>
                   <div
+                    className="markAsResolved"
+                    onClick={() => setAreYouSure(true)}
                     style={
                       selectedTicket.isResolved
                         ? {
-                            color: "rgb(112,185,109)",
+                            border: "4px solid rgb(112,185,109)",
                           }
-                        : { color: "rgb(212,61,61" }
+                        : {
+                            border: "4px solid rgb(212,61,61)",
+                          }
                     }
                   >
-                    {selectedTicket.isResolved
-                      ? "Reopen Ticket"
-                      : "Resolve Ticket"}
+                    <div
+                      style={
+                        selectedTicket.isResolved
+                          ? {
+                              color: "rgb(112,185,109)",
+                            }
+                          : { color: "rgb(212,61,61" }
+                      }
+                    >
+                      {selectedTicket.isResolved
+                        ? "Reopen Ticket"
+                        : "Resolve Ticket"}
+                    </div>
+                    <div
+                      className="resolveTicketButton"
+                      style={
+                        selectedTicket.isResolved
+                          ? { backgroundColor: "rgb(112,185,109)" }
+                          : { backgroundColor: "rgb(212,61,61)" }
+                      }
+                    />
                   </div>
-                  <div
-                    className="resolveTicketButton"
-                    style={
-                      selectedTicket.isResolved
-                        ? { backgroundColor: "rgb(112,185,109)" }
-                        : { backgroundColor: "rgb(212,61,61)" }
-                    }
-                  />
+                </div>
+                <div className="description">
+                  <b>Description: </b>
+                  {selectedTicket.description}
                 </div>
               </div>
-              <div className="description">
-                <b>Description: </b>
-                {selectedTicket.description}
+              <div className="comments">
+                <form
+                  className="newCommentForm"
+                  onSubmit={(e) => handleSubmitComment(e)}
+                >
+                  <input
+                    type="textarea"
+                    required
+                    onChange={(e) => setNewComment(e.target.value)}
+                    value={newComment}
+                    placeholder="Add Comment"
+                  />
+                  <button type="submit">{">"}</button>
+                </form>
+                <div className="commentList">{commentList}</div>
               </div>
             </div>
-            <div className="comments">
-              <form
-                className="newCommentForm"
-                onSubmit={(e) => handleSubmitComment(e)}
-              >
-                <input
-                  type="textarea"
-                  required
-                  onChange={(e) => setNewComment(e.target.value)}
-                  value={newComment}
-                  placeholder="Add Comment"
-                />
-                <button type="submit">{">"}</button>
-              </form>
-              <div className="commentList">{commentList}</div>
-            </div>
-          </div>
+          )
         )}
       </div>
     </div>

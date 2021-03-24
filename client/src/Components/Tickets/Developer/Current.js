@@ -3,6 +3,7 @@ import { UserContext } from "../../../Context/UserContext";
 import { AppContext } from "../../../Context/AppContext";
 import axios from "axios";
 import "./Current.css";
+import AreYouSure from "../../AreYouSure";
 
 export default function InProgress(props) {
   const [currentTickets, setCurrentTickets] = useState([]);
@@ -10,6 +11,7 @@ export default function InProgress(props) {
   const [selectedComment, setSelectedComment] = useState();
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState("");
+  const [areYouSure, setAreYouSure] = useState(false);
 
   const { currentUser } = useContext(UserContext);
   const { currentApp } = useContext(AppContext);
@@ -64,7 +66,7 @@ export default function InProgress(props) {
       </div>
       <div className="date">
         <b>Date: </b>
-        {item.date}
+        {new Date(item.date).toLocaleString()}
       </div>
     </div>
   ));
@@ -152,7 +154,7 @@ export default function InProgress(props) {
         >
           <div className="commentor">{comment.username}</div>
           <div className="description">{comment.description}</div>
-          <div className="date">{comment.date}</div>
+          <div className="date">{new Date(comment.date).toLocaleString()}</div>
           <div
             className="clickToViewReplies"
             style={handleRepliesStyles(comment)}
@@ -165,7 +167,9 @@ export default function InProgress(props) {
             <div className="reply">
               <div className="user">{reply.username}</div>
               <div className="description">{reply.description}</div>
-              <div className="date">{reply.date}</div>
+              <div className="date">
+                {new Date(reply.date).toLocaleString()}
+              </div>
             </div>
           ))}
           <form
@@ -194,6 +198,7 @@ export default function InProgress(props) {
       })
       .then(() => {
         setSelectedTicket(null);
+        setAreYouSure(false);
       });
   };
 
@@ -208,72 +213,81 @@ export default function InProgress(props) {
         {currentTickets && currentTicketDivs}
       </div>
       <div className="rightSide">
-        {selectedTicket && (
-          <div className="selectedTicket">
-            <div className="self">
-              <div className="upperContainer">
-                <div className="leftDiv">
-                  <div className="user">{selectedTicket.creatorname}</div>
-                  <div className="title">{selectedTicket.title}</div>
-                </div>
-                <div
-                  className="markAsResolved"
-                  onClick={() => handleResolveTicket()}
-                  style={
-                    selectedTicket.isResolved
-                      ? {
-                          border: "4px solid rgb(112,185,109)",
-                        }
-                      : {
-                          border: "4px solid rgb(212,61,61)",
-                        }
-                  }
-                >
+        {areYouSure ? (
+          <AreYouSure
+            title="Resolve Ticket?"
+            description="This will move the ticket to the 'resolved' section, but you can always bring it back later"
+            action={() => handleResolveTicket()}
+            cancel={() => setAreYouSure(false)}
+          />
+        ) : (
+          selectedTicket && (
+            <div className="selectedTicket">
+              <div className="self">
+                <div className="upperContainer">
+                  <div className="leftDiv">
+                    <div className="user">{selectedTicket.creatorname}</div>
+                    <div className="title">{selectedTicket.title}</div>
+                  </div>
                   <div
+                    className="markAsResolved"
+                    onClick={() => setAreYouSure(true)}
                     style={
                       selectedTicket.isResolved
                         ? {
-                            color: "rgb(112,185,109)",
+                            border: "4px solid rgb(112,185,109)",
                           }
-                        : { color: "rgb(212,61,61" }
+                        : {
+                            border: "4px solid rgb(212,61,61)",
+                          }
                     }
                   >
-                    {selectedTicket.isResolved
-                      ? "Reopen Ticket"
-                      : "Resolve Ticket"}
+                    <div
+                      style={
+                        selectedTicket.isResolved
+                          ? {
+                              color: "rgb(112,185,109)",
+                            }
+                          : { color: "rgb(212,61,61" }
+                      }
+                    >
+                      {selectedTicket.isResolved
+                        ? "Reopen Ticket"
+                        : "Resolve Ticket"}
+                    </div>
+                    <div
+                      className="resolveTicketButton"
+                      style={
+                        selectedTicket.isResolved
+                          ? { backgroundColor: "rgb(112,185,109)" }
+                          : { backgroundColor: "rgb(212,61,61)" }
+                      }
+                    />
                   </div>
-                  <div
-                    className="resolveTicketButton"
-                    style={
-                      selectedTicket.isResolved
-                        ? { backgroundColor: "rgb(112,185,109)" }
-                        : { backgroundColor: "rgb(212,61,61)" }
-                    }
-                  />
+                </div>
+                <div className="description">
+                  <b>Description: </b>
+                  {selectedTicket.description}
                 </div>
               </div>
-              <div className="description">
-                <b>Description: </b>
-                {selectedTicket.description}
+              <div className="comments">
+                <form
+                  className="newCommentForm"
+                  onSubmit={(e) => handleSubmitComment(e)}
+                >
+                  <input
+                    type="textarea"
+                    required
+                    onChange={(e) => setNewComment(e.target.value)}
+                    value={newComment}
+                    placeholder="Add Comment"
+                  />
+                  <button type="submit">{">"}</button>
+                </form>
+                <div className="commentList">{commentList}</div>
               </div>
             </div>
-            <div className="comments">
-              <form
-                className="newCommentForm"
-                onSubmit={(e) => handleSubmitComment(e)}
-              >
-                <input
-                  type="textarea"
-                  required
-                  onChange={(e) => setNewComment(e.target.value)}
-                  value={newComment}
-                  placeholder="Add Comment"
-                />
-                <button type="submit">{">"}</button>
-              </form>
-              <div className="commentList">{commentList}</div>
-            </div>
-          </div>
+          )
         )}
       </div>
     </div>

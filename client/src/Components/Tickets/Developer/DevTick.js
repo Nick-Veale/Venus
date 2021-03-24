@@ -14,7 +14,7 @@ export default function DevTick() {
   const setSideNavStyle = (n) => {
     const colorScheme = () => {
       if (navigator === 0) {
-        return "rgb(212, 0, 0)";
+        return "rgb(255, 255, 255)";
       } else if (navigator === 1) {
         return "rgb(212, 100, 100)";
       } else if (navigator === 2) {
@@ -27,10 +27,17 @@ export default function DevTick() {
       backgroundColor: colorScheme(),
       border: `2px solid ${colorScheme()}`,
     };
+    const filledBlackText = {
+      backgroundColor: colorScheme(),
+      border: `2px solid ${colorScheme()}`,
+      color: "black",
+    };
     const empty = {
       backgroundColor: "inherit",
     };
-    if (n === navigator) {
+    if (n === navigator && navigator === 0) {
+      return filledBlackText;
+    } else if (n === navigator) {
       return filled;
     } else {
       return empty;
@@ -54,6 +61,7 @@ export default function DevTick() {
         <CreateTicket
           setNavigator={(n) => setNavigator(n)}
           setNumberNew={(n) => setNumberNew(n)}
+          numberNew={numberNew}
         />
       );
     }

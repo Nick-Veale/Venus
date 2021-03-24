@@ -6,6 +6,7 @@ import { AppContext } from "../../Context/AppContext";
 import { Redirect, Link } from "react-router-dom";
 import "./Tickets.css";
 import axios from "axios";
+import AreYouSure from "../AreYouSure.js";
 
 export default function Tickets() {
   const [modal, setModal] = useState(false);
@@ -13,6 +14,7 @@ export default function Tickets() {
   const [regApp, setRegApp] = useState("");
   const [searchResults, setSearchResults] = useState("");
   const [myApps, setMyApps] = useState([]);
+  const [areYouSure, setAreYouSure] = useState(false);
 
   const { currentApp, setCurrentApp } = useContext(AppContext);
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -230,11 +232,21 @@ export default function Tickets() {
             <Link to="/account" style={{ textDecoration: "none" }}>
               <div>My Account</div>
             </Link>
-            <div onClick={() => logout()}>Logout</div>
+            <div onClick={() => setAreYouSure(true)}>Logout</div>
           </div>
         </nav>
         <div className="ticketsDisplay">
-          {currentUser.isDeveloper ? <DevTick /> : <UsrTick />}
+          {areYouSure ? (
+            <AreYouSure
+              title="Are you sure you want to log out?"
+              action={() => logout()}
+              cancel={() => setAreYouSure(false)}
+            />
+          ) : currentUser.isDeveloper ? (
+            <DevTick />
+          ) : (
+            <UsrTick />
+          )}
         </div>
       </div>
     );

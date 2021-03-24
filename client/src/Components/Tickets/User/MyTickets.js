@@ -50,7 +50,7 @@ export default function MyTickets() {
       </div>
       <div className="ticketDate">
         <b>Date: </b>
-        {item.date.slice(0, 10)}
+        {new Date( item.date ).toLocaleString()}
       </div>
     </div>
   ));
@@ -123,7 +123,7 @@ export default function MyTickets() {
             {comment.username}
           </div>
           <div className="description">{comment.description}</div>
-          <div className="date">{comment.date.slice(0, 10)}</div>
+          <div className="date">{new Date( comment.date ).toLocaleString()}</div>
           <div
             className="clickToViewReplies"
             style={handleRepliesStyles(comment)}
@@ -138,7 +138,7 @@ export default function MyTickets() {
               <div className="description" style={{ fontSize: "1em" }}>
                 {reply.description}
               </div>
-              <div className="date">{reply.date}</div>
+              <div className="date">{new Date( reply.date ).toLocaleString()}</div>
             </div>
           ))}
           <form

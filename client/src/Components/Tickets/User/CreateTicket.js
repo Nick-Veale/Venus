@@ -22,7 +22,6 @@ export default function NewTickets(props) {
         description: ticketDesc,
       })
       .then((res) => {
-        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -32,7 +31,8 @@ export default function NewTickets(props) {
     setCurrentApp(responseApp);
     setTicketTitle("");
     setTicketDesc("");
-    props.setNavigator(1);
+    props.setNumberNew(props.numberNew + 1);
+    props.setNavigator(currentUser.isDeveloper ? 0 : 1);
   };
 
   if (!currentApp) {
