@@ -68,7 +68,7 @@ export default function Tickets() {
 
   const handleRegisterApp = (e) => {
     e.preventDefault();
-    if (regApp) {
+    regApp &&
       axios
         .post("http://localhost:3030/app/register", {
           appName: regApp,
@@ -78,11 +78,10 @@ export default function Tickets() {
           if (res.status === 201) {
             alert("App registered Succesully!");
             console.log(res.data);
-            // setCurrentUser(res.data)
+            setCurrentUser(res.data);
             setModal(false);
           }
         });
-    }
   };
 
   const handleAppClick = async (item) => {

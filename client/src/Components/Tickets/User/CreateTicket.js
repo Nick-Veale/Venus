@@ -42,12 +42,15 @@ export default function NewTickets(props) {
       <div className="displayWindow">
         <form className="newTicketForm" onSubmit={(e) => handleTicketSubmit(e)}>
           <h3 id="ticketFormH3">New Ticket for {currentApp.appName}</h3>
-          <h2 className="ticketLabel">Ticket Title</h2>
+          <h2 className="ticketLabel">
+            Ticket Title <i>{ticketTitle.length}/60</i>
+          </h2>
           <input
             type="text"
             onChange={(e) => setTicketTitle(e.target.value)}
             value={ticketTitle}
             placeholder="Give a title for your issue"
+            maxLength="60"
             required
           />
           <h2 className="ticketLabel">Description</h2>

@@ -300,8 +300,7 @@ export default function Resolved(props) {
                     className="newCommentForm"
                     onSubmit={(e) => handleSubmitComment(e)}
                   >
-                    <input
-                      type="textarea"
+                    <textarea
                       required
                       onChange={(e) => setNewComment(e.target.value)}
                       value={newComment}

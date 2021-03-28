@@ -203,11 +203,16 @@
   border-top-right-radius: 0px;
   width: 44vw;
 }
-.selectedTicket .comments .newCommentForm input {
-  width: 39vw;
+.selectedTicket .comments .newCommentForm textarea {
+  min-width: 39vw;
   max-width: 39vw;
+  min-height: 10vh;
   height: auto;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+/* .selectedTicket .comments .newCommentForm input:focus {
+  height: 200px;
+} */
 .selectedTicket .comments .newCommentForm button {
   height: auto;
   width: auto;
